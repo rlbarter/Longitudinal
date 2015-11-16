@@ -332,8 +332,8 @@ for(i in unique(dat_long$id)) {
     dat12_i <- filter(dat12_ER, id == i)
     period_dates <- filter(dplyr::select(dat_long, id, period, begin_date), id == i)$begin_date
   
-    r11 <- sapply(lapply(dat11_i$date, function(x) x < period_dates), function(x) which(x)[1])
-    r12 <- sapply(lapply(dat12_i$date, function(x) x < period_dates), function(x) which(x)[1])
+    r11 <- sapply(lapply(dat11_i$date, function(x) x < period_dates), function(x) which(x)[1] - 1)
+    r12 <- sapply(lapply(dat12_i$date, function(x) x < period_dates), function(x) which(x)[1] - 1)
     r12[is.na(r12)] <- 5
     
     if (length(r11) > 0) df11 <- data.frame(id = i, period = unlist(r11), expense = dat11_i$expense)
@@ -415,7 +415,7 @@ dat_final <- dat_final %>% filter(!(id %in% change_smoking$id))
 
 meps_clean <- dat_final
 
-#save(meps_clean, file = "MEPS_clean.RData")
+save(meps_clean, file = "MEPS_clean.RData")
 
 
 
@@ -564,3 +564,5 @@ baseline_complete %>%
             m_employed = mean(employed),
             m_emplinsurance = mean(empl_insurance),
             mincome = mean(income))
+
+
