@@ -45,7 +45,7 @@ kmeans <- kmeans(dplyr::select(meps_new,ER_shifted_expense,ER_change_expense,ER_
 meps_new_clustered <- meps_new
 meps_new_clustered$cluster <- factor(kmeans$cluster)
 ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
-#ggplot(meps_shifted_clustered) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
+#ggplot(meps_new_clustered) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
 
 ### Clara
 clara <- clara(dplyr::select(meps_new,ER_shifted_expense,ER_change_expense,ER_visits,ER_expense),k=10)
@@ -54,3 +54,5 @@ meps_new_clustered2 <- meps_new
 meps_new_clustered2$cluster <- factor(clara$clustering)
 ggplot(filter(meps_new_clustered2, id %in% index)) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, col = id))
 #ggplot(meps_new_clustered2) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
+
+# haven't figured out how to cluster data cleary enough..
