@@ -45,12 +45,15 @@ ggplot(filter(meps_new, id %in% index)) + geom_line(aes(x = as.numeric(period), 
 index <- sample(unique(meps_clean$id), 1000)
 
 ### K-means-clustering
-kmeans <- kmeans(dplyr::select(meps_new,ER_change_expense1, ER_sd_expense, ER_shifted_mean), centers = 5)
+kmeans <- kmeans(dplyr::select(meps_new,ER_sd_expense), centers = 10)
 # plot the clusters
 meps_new_clustered <- meps_new
 meps_new_clustered$cluster <- factor(kmeans$cluster)
 ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
+
 ggplot(meps_new_clustered) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
+ggplot(filter(meps_new_clustered, cluster==10)) + geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = cluster))
+
 
 ### Clara
 clara <- clara(dplyr::select(meps_new,ER_change_expense1, ER_sd_expense, ER_shifted_mean),k=5)
