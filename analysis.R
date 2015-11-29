@@ -42,8 +42,6 @@ ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric
 
 
 
-
-
 ########################## Clustering on shifted data: works really well! ################
 
 set.seed(123)
@@ -100,10 +98,6 @@ ggplot(meps_clustered_mean) +
 # so we are getting each of the peaks as well as one cluster that has very small expenses
 
 
-
-
-
-
 ##################### Analyzing the data by cluster ##############
 
 meps_clean$period <- factor(meps_clean$period)
@@ -123,6 +117,7 @@ ggplot(meps_clustered_mean) +
   facet_wrap(~cluster)
 # so we are getting each of the peaks as well as one cluster that has very small expenses
 
+save(meps_clustered,file="meps_clustered.RData")
 
 
 ### previous attempts
