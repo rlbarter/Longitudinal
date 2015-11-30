@@ -29,7 +29,7 @@ no_visits <- which(apply(meps_wide[,-1], 1, function(x) sum(x == 0)) == 5)
 meps_wide_visited <- meps_wide[-no_visits,]
 
 # do clustering
-kmeans <- kmeans(meps_wide_visited, centers = 5)
+kmeans <- kmeans(meps_wide_visited, centers = 6)
 # convert back to long form
 meps_new_clustered <- meps_wide_visited
 meps_new_clustered <- melt(meps_new_clustered)
