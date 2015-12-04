@@ -30,9 +30,15 @@ meps_new_clustered$ER_expense <- unlist(meps_clean %>%
 
 
 # plot individuals expenses (raw and cumulative)
-ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric(period), y = cum_ER_expense, group = id)) 
-ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric(period), y = ER_expense, group = id)) 
+a = ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric(period), y = cum_ER_expense, group = id))
+a = a + labs(title="<Figure2: Cumulated ER expense over time>",x="Time (period)",y="Cumulated ER expense")
+a = a + theme(axis.title.y = element_text(size = rel(2)), axis.title.x = element_text(size = rel(2)),plot.title = element_text(size=rel(2)))
+a
 
+a = ggplot(filter(meps_new_clustered, id %in% index)) + geom_line(aes(x = as.numeric(period), y = ER_expense, group = id))
+a = a + labs(title="<Figure1: ER expense over time>",x="Time (period)",y="ER expense")
+a = a + theme(axis.title.y = element_text(size = rel(2)), axis.title.x = element_text(size = rel(2)),plot.title = element_text(size=rel(2)))
+a
 
 
 
@@ -75,14 +81,17 @@ meps_new_clustered_shifted$ER_expense <- meps_new_clustered$ER_expense
 meps_new_clustered_shifted$cum_ER_expense <- meps_new_clustered$cum_ER_expense
 
 
-
+require(grid)
 # plot clusters by looking at shifted cumulative expenses
 index <- sample(unique(meps_new_clustered_shifted$id), 200)
 ggplot(filter(meps_new_clustered_shifted, id %in% index)) + 
   geom_line(aes(x = as.numeric(period), y = ER_shifted_expense, group = id, col = factor(cluster))) +
-  scale_y_continuous(name = "shifted cumulative ER expenses") + 
-  scale_x_continuous(name = "period") +
-  ggtitle("Shifted cumulative ER expenses colored by cluster")
+  scale_y_continuous(name = "Shifted cumulative ER expenses") + 
+  scale_x_continuous(name = "Time (period)") +
+  ggtitle("<Figure3: Shifted cumulated ER expenses colored by cluster") +
+  scale_colour_discrete(name="Cluster") +
+  theme(axis.title.y = element_text(size = rel(2)), axis.title.x = element_text(size = rel(2)),plot.title = element_text(size=rel(2))) +
+  theme(legend.key.size=unit(1.5,"cm"),legend.title=element_text(size=rel(1.5)),legend.text=element_text(size=rel(1.5)))
 
 
 
@@ -113,9 +122,12 @@ ggplot(meps_clustered_cumulative_mean) +
   #geom_line(aes(x = as.numeric(period), y = cum_ER_expense, group = id, col = factor(cluster)), 
   #          data = filter(meps_new_clustered_shifted, id %in% index),
   #          alpha = 0.4) +
-  scale_x_continuous(name = "period") +
-  scale_y_continuous(name = "average cumulative ER expense") + 
-  ggtitle("Averaged cumulative ER expenses colored by cluster")
+  scale_x_continuous(name = "Time (period)") +
+  scale_y_continuous(name = "Average cumulated ER expense") + 
+  ggtitle("<Figure5: Averaged cumulated ER expenses colored by cluster>") + 
+  scale_colour_discrete(name="Cluster") +
+  theme(axis.title.y = element_text(size = rel(2)), axis.title.x = element_text(size = rel(2)),plot.title = element_text(size=rel(2))) +
+  theme(legend.key.size=unit(1.5,"cm"),legend.title=element_text(size=rel(1.5)),legend.text=element_text(size=rel(1.5)))
 
 # so we are getting each of the peaks as well as one cluster that has very small expenses
 
@@ -124,9 +136,13 @@ ggplot(meps_clustered_cumulative_mean) +
 meps_clustered_cumulative_mean <- meps_new_clustered_shifted %>% group_by(cluster, period) %>% summarize(mean_ER_expense = mean(ER_expense))
 ggplot(meps_clustered_cumulative_mean) + 
   geom_line(aes(x = as.numeric(period), y = mean_ER_expense, col = factor(cluster)), size = 4) +
-  scale_x_continuous(name = "period") +
-  scale_y_continuous(name = "mean ER expense") +
-  ggtitle("Averaged ER expenses colored by cluster")
+  scale_x_continuous(name = "Time (period)") +
+  scale_y_continuous(name = "Mean ER expense") +
+  ggtitle("<Figure4: Averaged ER expenses colored by cluster>") + 
+  scale_colour_discrete(name="Cluster") +
+  theme(axis.title.y = element_text(size = rel(2)), axis.title.x = element_text(size = rel(2)),plot.title = element_text(size=rel(2))) +
+  theme(legend.key.size=unit(1.5,"cm"),legend.title=element_text(size=rel(1.5)),legend.text=element_text(size=rel(1.5)))
+
 # so we are getting each of the peaks as well as one cluster that has very small expenses
 
 
@@ -156,9 +172,14 @@ ggplot(meps_clustered_cumulative_mean) +
 meps_clustered_cumulative_mean <- meps_clustered_cumulative %>% group_by(cluster, period, smoker2) %>% summarize(mean_cum_ER_expense = mean(cum_ER_expense))
 ggplot(meps_clustered_cumulative_mean) + 
   geom_line(aes(x = as.numeric(period), y = mean_cum_ER_expense, col = factor(smoker2)), size = 4) +
-  scale_x_continuous(name = "period") +
-  scale_y_continuous(name = "mean cumulative ER expense") + 
-  facet_wrap(~cluster)
+  scale_x_continuous(name = "Time (period)") +
+  scale_y_continuous(name = "Mean cumulated ER expense") + 
+  facet_wrap(~cluster) +
+  ggtitle("<Figure6: Mean cumulated ER >") + 
+  scale_colour_discrete(name="Cluster") +
+  theme(axis.title.y = element_text(size = rel(2)), axis.title.x = element_text(size = rel(2)),plot.title = element_text(size=rel(2))) +
+  theme(legend.key.size=unit(1.5,"cm"),legend.title=element_text(size=rel(1.5)),legend.text=element_text(size=rel(1.5)))
+
 
 
 
